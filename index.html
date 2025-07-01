@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🤖 Arbitražna Nadzorna Ploča</title>
+  <style>
+    body { font-family: sans-serif; background-color: #f4f4f4; padding: 2rem; }
+    h1 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #eee; }
+    footer { text-align: center; margin-top: 40px; font-size: 0.9em; color: #555; }
+  </style>
+</head>
+<body>
+  <h1>🤖 Arbitražna Nadzorna Ploča</h1>
+  <p style="text-align: center;">Dobrodošla, Radmila 🌟</p>
+
+  <h2>📊 Arbitražne Prilike</h2>
+  <div id="csv-output">Učitavanje podataka...</div>
+
+  <footer>Powered by ❤️ Alimdar Arbitrage Engine</footer>
+
+  <script>
+    async function loadCSV() {
+      try {
+        const response = await fetch('narudzbe.csv');
+        const data = await response.text();
+        const rows = data.trim().split('\n');
+        let html = '<table><thead><tr>';
+
+        const headers = rows[0].split(',');
+        headers.forEach(h => html += `<th>${h}</th>`);
+        html += '</tr></thead><tbody>';
+
+        for (let i = 1; i < rows.length; i++) {
+          const cells = rows[i].split(',');
+          html += '<tr>';
+          cells.forEach(c => html += `<td>${c}</td>`);
+          html += '</tr>';
+        }
+
+        html += '</tbody></table>';
+        document.getElementById('csv-output').innerHTML = html;
+      } catch (err) {
+        document.getElementById('csv-output').innerText = '⚠️ Greška pri učitavanju CSV datoteke.';
+        console.error(err);
+      }
+    }
+
+    loadCSV();
+    setInterval(loadCSV, 60000); // Osvježava svakih 60 sekundi
+  </script>
+</body>
+</html>
